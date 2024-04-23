@@ -13,7 +13,6 @@ Base = declarative_base()
 def get_db(req:Request):
     db = sessionLocal()
     try:
-        print(db)
         yield db
     finally:
         db.close()

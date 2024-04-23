@@ -3,12 +3,13 @@ from sqlalchemy.orm import Session
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext 
-from jose import JWTError , jwt
+from jose import JWTError 
 from datetime import datetime , timedelta , timezone
 from .data.auth.dtos import TokenData
 from .data.user.models import User
 from .data.database import Session, get_db
 from .config import Settings
+import python_jwt as jwt
 
 password_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
