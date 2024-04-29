@@ -2,7 +2,7 @@ from fastapi import FastAPI , Depends
 from fastapi.middleware.cors import CORSMiddleware
 from .data.database import engine,Base,get_db
 from sqlalchemy.orm import Session
-from .controllers import auth, location
+from .controllers import auth, location, pv_system
 from .config import Settings
 
 
@@ -24,6 +24,7 @@ Base.metadata.create_all(bind=engine)
 
 app.include_router(auth.router)
 app.include_router(location.router)
+app.include_router(pv_system.router)
 
 @app.get("/", response_model=None)
 def read_root(db: Session = Depends(get_db)):

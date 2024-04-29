@@ -1,5 +1,6 @@
 from ..database import Base
 from sqlalchemy import Column, ForeignKey, String, Integer,Float,JSON, Boolean
+from sqlalchemy.orm import relationship
 
 class Location(Base):
     __tablename__ = 'location'
