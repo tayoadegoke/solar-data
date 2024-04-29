@@ -9,7 +9,7 @@ from .data.auth.dtos import TokenData
 from .data.user.models import User
 from .data.database import Session, get_db
 from .config import Settings
-import python_jwt as jwt
+import jwt
 
 password_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -28,8 +28,12 @@ def verify_password(password:str, hashed:str):
 def create_access_token(data:dict):
     dataCopy = data.copy()
     expiry = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    dataCopy.update({"exp":expiry})
-    return jwt.encode(dataCopy, SECRET_KEY, algorithm=ALGORITHM)
+    expiry_timestamp = expiry.timestamp()
+    dataCopy.update({"exp":expiry_timestamp})
+    
+    token = jwt.encode(dataCopy, SECRET_KEY, algorithm=ALGORITHM)
+    print(token)
+    return token
 
 async def get_user(db, username: str):
    user = db.query(User).filter(User.email == username).first()
@@ -42,6 +46,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], db: Se
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
+    print(token)
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("user")
