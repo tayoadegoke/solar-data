@@ -10,14 +10,18 @@ export default async function handler(
     res: NextApiResponse<Data>,
 ) {
 
-    if (req.method === 'POST') {
-        const resp = await axiosServerInstance.post('/location', req.body)
+    try {
+        if (req.method === 'POST') {
+            const resp = await axiosServerInstance.post('/location', req.body)
 
-        res.status(200).json(resp.data)
-    }
-    if (req.method === 'GET') {
-        const resp = await axiosServerInstance.get('/location')
+            res.status(200).json(resp.data)
+        }
+        if (req.method === 'GET') {
+            const resp = await axiosServerInstance.get('/location')
 
-        res.status(200).json(resp.data)
+            res.status(200).json(resp.data)
+        }
+    } catch (e) {
+        //
     }
 }

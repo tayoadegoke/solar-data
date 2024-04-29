@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, UseQueryOptions } from "@tanstack/react-query"
 import { axiosBffInstance } from "../common"
 
 
@@ -28,6 +28,7 @@ export const getLocations = async () => {
 }
 
 
-export const useLocationsQuery = () => {
-    return useQuery({ queryKey: ['locations'], queryFn: getLocations })
+export const useLocationsQuery = (enabled: boolean | undefined) => {
+    console.log({ enabled })
+    return useQuery({ queryKey: ['locations'], queryFn: getLocations, enabled })
 }

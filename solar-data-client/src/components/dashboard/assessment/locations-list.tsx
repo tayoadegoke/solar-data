@@ -8,15 +8,19 @@ import { capitalizeFirstLetter } from '@/utils/utils'
 import { useTranslation } from 'react-i18next'
 import { GridRenderCellParams } from '@mui/x-data-grid'
 import { useLocationsQuery } from '@/data/assessment/assessment.queries'
+import { useSession } from 'next-auth/react'
 
 interface Props { }
 
 function LocationsList(props: Props) {
     const { } = props
     const router = useRouter()
-    const { data, isLoading } = useLocationsQuery()
+    const session = useSession()
+    const isAuthenticated = session.status === 'authenticated' ? true : false
+    const { data, isLoading } = useLocationsQuery(isAuthenticated)
     const { t } = useTranslation()
 
+    console.log({ session })
     const colProps = [
         {
             field: 'ghi',
@@ -35,8 +39,6 @@ function LocationsList(props: Props) {
         router.push(`/locations/${row.id}`)
 
     }
-
-    { console.log(data) }
 
     return (
         isLoading || !data ?

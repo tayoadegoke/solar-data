@@ -23,13 +23,14 @@ const LocationMap = ({ changeTab }: Props) => {
     const [polygonLinesState, setPolygonlinesState] = useState<google.maps.Polygon>()
     const [finalPolygonLines, setFinalPolygonLines] = useState<google.maps.LatLng[]>([])
     const [renderMapToggle, setRenderMapToggle] = useState(true)
+    const [coordinatesChanged, setCoordinatesChanged] = useState(false)
+    let coordinateBool = false
 
     const { t } = useTranslation()
     const { showToast } = useToast()
 
 
     const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string
-    console.log({ apiKey })
 
     let lines: google.maps.Polyline
     let polygonLines: google.maps.Polygon
@@ -86,7 +87,6 @@ const LocationMap = ({ changeTab }: Props) => {
         // Set CSS for the control.
         getControlBtnStyles(controlButton, 'Stop drawing', -80)
 
-
         controlButton.addEventListener('click', () => {
             map.setOptions({ draggableCursor: null });
             canDrawPolylines = false
@@ -95,6 +95,16 @@ const LocationMap = ({ changeTab }: Props) => {
         return controlButton;
     }
 
+
+    const handleDrag = (polygonLines: google.maps.Polygon) => {
+
+        google.maps.event.addListener(polygonLines, 'dragend', (e: latLngEvent) => {
+            const polygonArr = polygonLines.getPath().getArray()
+            setFinalPolygonLines(polygonArr)
+            setCoordinatesChanged(!coordinateBool)
+        })
+
+    }
     const mapLoaderFn = (map: google.maps.Map) => {
 
         let lineCoordinates: google.maps.LatLngLiteral[] = [];
@@ -146,6 +156,8 @@ const LocationMap = ({ changeTab }: Props) => {
             })
 
             polygonLines.setMap(map);
+            if (!canDrawPolylines)
+                handleDrag(polygonLines)
 
             const path = polygonLines.getPath();
 
@@ -197,6 +209,9 @@ const LocationMap = ({ changeTab }: Props) => {
                 drawPolygon()
             }
         })
+
+
+
     }
 
 
@@ -220,6 +235,11 @@ const LocationMap = ({ changeTab }: Props) => {
     useEffect(() => {
         renderMap()
     }, [renderMapToggle])
+
+    useEffect(() => {
+        // used to rerender form after polygon is dragged using coordinatesBool variable
+
+    }, [finalPolygonLines, coordinatesChanged])
 
 
     const transformCoordinates = (rawCoordinates: google.maps.LatLng[]) => {
@@ -295,7 +315,7 @@ const LocationMap = ({ changeTab }: Props) => {
                                 </Box>
                                 <Stack gap={1} my={4} width={'50%'} alignSelf={'center'}>
                                     <SdButton variant='outlined' onClick={deleteLocations}>{t('labels.deleteLocation')}</SdButton>
-                                    <SdButton variant='contained' type="submit">{t('labels.addLocation')}</SdButton>
+                                    <SdButton variant='contained' type="submit" disabled={area > 5000000}>{t('labels.addLocation')}</SdButton>
                                 </Stack>
 
                             </>
