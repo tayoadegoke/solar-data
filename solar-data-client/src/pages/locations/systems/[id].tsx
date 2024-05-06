@@ -1,18 +1,17 @@
 import React from 'react'
 import DashboardContainer from '@/components/dashboard/dashboard-container'
-import Locations from '@/components/dashboard/assessment/location/locations'
+import SystemDetails from '@/components/dashboard/assessment/system/system-details'
 
 interface Props { }
 
-function LocationsIndex(props: Props) {
+function SystemDetailsPage(props: Props) {
     const { } = props
 
     return (
         <DashboardContainer>
-            <Locations />
+            <SystemDetails />
         </DashboardContainer>
-
     )
 }
 
-export default LocationsIndex
+export default SystemDetailsPage

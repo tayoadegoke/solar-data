@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Typography } from '@mui/material'
+import React, { useState } from 'react'
+import { Typography, Box } from '@mui/material'
 import { useRouter } from 'next/router'
 import SdTable from '@/components/ui/SdTable'
 import SdSpinner from '@/components/ui/SdSpinner'
@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { GridRenderCellParams } from '@mui/x-data-grid'
 import { useLocationsQuery } from '@/data/assessment/assessment.queries'
 import { useSession } from 'next-auth/react'
+import SystemList from '../system/system-list'
 
 interface Props { }
 
@@ -17,8 +18,9 @@ function LocationsList(props: Props) {
     const router = useRouter()
     const session = useSession()
     const isAuthenticated = session.status === 'authenticated' ? true : false
-    const { data, isLoading } = useLocationsQuery(isAuthenticated)
+    const { data, isLoading, error } = useLocationsQuery(isAuthenticated)
     const { t } = useTranslation()
+    const [showSystems, setShowSystems] = useState(false)
 
     console.log({ session })
     const colProps = [
@@ -36,9 +38,10 @@ function LocationsList(props: Props) {
     ]
 
     const rowClickFn = (row: GridRowParams) => {
-        router.push(`/locations/${row.id}`)
 
+        setShowSystems(true)
     }
+    console.log({ data, error })
 
     return (
         isLoading || !data ?
@@ -47,7 +50,19 @@ function LocationsList(props: Props) {
             data && data.length === 0 ?
                 <Typography>You have not added any locations yet, click Add Location to add a location.</Typography>
                 :
-                <SdTable colProps={colProps} rowProps={data} rowClickFn={rowClickFn} />
+                <>
+                    <Typography>{t('titles.locations')}</Typography>
+                    <SdTable colProps={colProps} rowProps={data} rowClickFn={rowClickFn} />
+
+                    {showSystems &&
+                        <Box mt={4}>
+                            <Typography>{t('titles.systems')}</Typography>
+                            <SystemList />
+                        </Box>
+
+                    }
+                </>
+
 
     )
 }

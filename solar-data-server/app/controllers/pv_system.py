@@ -36,4 +36,9 @@ def get_modules(db: Session = Depends(get_db), user:userDtos.User = Depends(get_
     if user:
         db_module = db.query(moduleModels.PvSystemModule).all()
         return db_module
-    
+
+@router.get("/modules/{id}",response_model=None)
+def get_modules(id:int, db: Session = Depends(get_db), user:userDtos.User = Depends(get_current_user)):
+    if user:
+        db_module = db.query(moduleModels.PvSystemModule).filter(moduleModels.PvSystemModule.id == id).first()
+        return db_module
