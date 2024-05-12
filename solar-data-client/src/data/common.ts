@@ -30,7 +30,7 @@ axiosBffInstance.interceptors.response.use(function (response) {
     console.log({ error })
     if (error.code) {
         // console.log('signing out', error.response.message)
-        //signOut()
+        // signOut()
     }
     return Promise.reject(error);
 })

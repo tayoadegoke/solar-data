@@ -21,7 +21,7 @@ function Modules(props: Props) {
                     <SdSpinner />
                 }
                 {moduleId && data &&
-                    <ModuleForm />
+                    <ModuleForm data={data} />
                 }
             </Box>
 

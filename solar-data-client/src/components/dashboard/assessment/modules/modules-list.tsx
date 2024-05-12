@@ -23,7 +23,6 @@ function ModulesList(props: Props) {
     const { data, isLoading } = useModulesQuery(isAuthenticated)
     const { t } = useTranslation()
 
-    console.log({ session })
     const colProps = [
         {
             field: 'name',
