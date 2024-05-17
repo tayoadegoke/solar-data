@@ -1,5 +1,6 @@
 from ..database import Base
 from sqlalchemy import Column, ForeignKey, String, Integer,Float, Boolean
+from sqlalchemy.orm import relationship
 
 class PvSystemModule(Base):
     __tablename__ = 'pv_system_module'
@@ -33,4 +34,5 @@ class PvSystemModule(Base):
     cec_t_noct = Column(Float , nullable=False)
     cec_v_mp_ref = Column(Float , nullable=False)
     cec_v_oc_ref = Column(Float , nullable=False)
+    system = relationship("PvSystem")
     

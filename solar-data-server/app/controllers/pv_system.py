@@ -21,7 +21,16 @@ def create_system(system: systemDtos.PvSystemCreate ,db: Session = Depends(get_d
         db.commit()
         db.refresh(db_system)
         return [db_system] 
-    
+
+@router.put("/",response_model=None)
+def create_system(system: systemDtos.PvSystemCreate ,db: Session = Depends(get_db), user:userDtos.User = Depends(get_current_user)):
+    if user:
+        db_system = systemModels.PvSystem(**system.dict())
+        db.add(db_system)
+        db.commit()
+        db.refresh(db_system)
+        return [db_system] 
+  
 @router.post("/modules",response_model=None)
 def create_module(module: moduleDtos.PvSystemModuleCreate ,db: Session = Depends(get_db), user:userDtos.User = Depends(get_current_user)):
     if user:

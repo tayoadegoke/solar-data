@@ -4,6 +4,7 @@ from pydantic import BaseModel, ConfigDict
 
 class PvSystemBase(BaseModel):
     name : str
+    module_id : int
 
 
 class PvSystemCreate(PvSystemBase):

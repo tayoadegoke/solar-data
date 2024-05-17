@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Formik, Form } from 'formik'
 import { Box, Stepper, Step, StepLabel } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import Modules from '../modules/modules'
@@ -33,16 +34,45 @@ function SystemDetails(props: Props) {
                     </Step>
                 ))}
             </Stepper>
-            {activeStep == 1 &&
-                <Modules />
-            }
-            {/* {activeStep == 2 &&
-            //
-            } */}
-            {modulesLoaded &&
-                <StepControls setActiveStep={setActiveStep} activeStep={activeStep} />
-            }
+            <Formik
+                initialValues={{ name: '', module_id: 0 }}
+                // validationSchema={LoginSchema}
+                onSubmit={(values, { setSubmitting }) => {
+                    setTimeout(async () => {
+                        // const result = await signIn('credentials', {
+                        //     email: values.email,
+                        //     password: values.password,
+                        //     redirect: false
+                        // })
+                        setSubmitting(false);
+                        console.log('submitting')
+                    }, 400);
 
+                }}
+            >
+                {({
+                    values,
+                    errors,
+                    touched,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    isSubmitting,
+                }) => (
+                    <Form onSubmit={handleSubmit}>
+                        {activeStep == 1 &&
+                            <Modules />
+                        }
+                        {/* {activeStep == 2 &&
+                         //
+                         */}
+                        {modulesLoaded &&
+                            <StepControls setActiveStep={setActiveStep} activeStep={activeStep} />
+                        }
+
+                    </Form>
+                )}
+            </Formik>
         </Box>
     )
 }

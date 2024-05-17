@@ -29,7 +29,7 @@ function SystemList(props: Props) {
         { field: 'inverters', headerName: t('labels.inverters'), renderCell: (param: GridRenderCellParams) => capitalizeFirstLetter(param.formattedValue) },
         { field: 'no_of_inverters', headerName: t('labels.numberOfInverters'), renderCell: (param: GridRenderCellParams) => Number.parseFloat(param.formattedValue).toFixed(2) },
         {
-            field: 'system_actios', headerName: t('labels.systemActions'), renderCell: (param: GridRenderCellParams) => param.formattedValue ? t('labels.active') : t('labels.inactive')
+            field: 'system_actions', headerName: t('labels.systemActions'), renderCell: (param: GridRenderCellParams) => param.formattedValue ? t('labels.active') : t('labels.inactive')
 
         },
 

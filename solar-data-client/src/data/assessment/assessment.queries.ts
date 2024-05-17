@@ -11,6 +11,11 @@ const moduleKeys = {
     id: (id: string) => [...moduleKeys.all, id],
 }
 
+const systemKeys = {
+    all: ['systems'],
+    id: (id: string) => [systemKeys.all, id]
+}
+
 export const addLocation = async (values: any) => {
     try {
         delete values.isActive
@@ -20,6 +25,16 @@ export const addLocation = async (values: any) => {
     } catch (e) {
         return e
 
+    }
+}
+
+export const updateSystem = async (values: any) => {
+    try {
+        const res = await axiosBffInstance.put('/pv_system', values)
+        return res
+    }
+    catch (e) {
+        return e
     }
 }
 
@@ -50,6 +65,7 @@ export const getModuleDetail = async (id: string) => {
     }
 }
 
+//Queries 
 export const useLocationsQuery = (enabled: boolean | undefined) => {
     return useQuery({ queryKey: locationKeys.all, queryFn: getLocations, enabled, staleTime: Infinity })
 }
@@ -63,3 +79,6 @@ export const useModulesQuery = (enabled: boolean | undefined) => {
 export const useModuleDetailQuery = (id: string) => {
     return useQuery({ queryKey: moduleKeys.id(id), queryFn: () => getModuleDetail(id), enabled: !!id, staleTime: Infinity })
 }
+
+
+//Mutations

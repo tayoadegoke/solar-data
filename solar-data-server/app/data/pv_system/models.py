@@ -5,4 +5,6 @@ from sqlalchemy.orm import relationship
 class PvSystem(Base):
     __tablename__ = 'pv_system'
     id = Column(Integer,primary_key=True, nullable=False )
-    name = Column(String, nullable=False)
+    name = Column(String, nullable=False) 
+    module_id = Column(Integer, ForeignKey("pv_system_module.id"), nullable=False)
+
