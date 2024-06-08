@@ -5,6 +5,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import Modules from '../modules/modules'
 import StepControls from './step-controls'
 import { useModulesQuery } from '@/data/assessment/assessment.queries'
+import Inverters from '../inverters/inverters'
 
 
 interface Props { }
@@ -13,8 +14,6 @@ function SystemDetails(props: Props) {
     const { } = props
     const [activeStep, setActiveStep] = useState(1)
     const modulesLoaded = useModulesQuery(undefined).isFetched
-
-
 
 
     const steps = [
@@ -35,7 +34,7 @@ function SystemDetails(props: Props) {
                 ))}
             </Stepper>
             <Formik
-                initialValues={{ name: '', module_id: 0 }}
+                initialValues={{ location_id: '', module_id: null, inverter_id: null }}
                 // validationSchema={LoginSchema}
                 onSubmit={(values, { setSubmitting }) => {
                     setTimeout(async () => {
@@ -63,9 +62,10 @@ function SystemDetails(props: Props) {
                         {activeStep == 1 &&
                             <Modules />
                         }
-                        {/* {activeStep == 2 &&
-                         //
-                         */}
+                        {activeStep == 2 &&
+                            <Inverters />
+                        }
+
                         {modulesLoaded &&
                             <StepControls setActiveStep={setActiveStep} activeStep={activeStep} />
                         }

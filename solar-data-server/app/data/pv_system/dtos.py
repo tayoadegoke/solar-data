@@ -3,8 +3,7 @@ from pydantic import BaseModel, ConfigDict
 
 
 class PvSystemBase(BaseModel):
-    name : str
-    module_id : int
+    location_id : int
 
 
 class PvSystemCreate(PvSystemBase):
@@ -20,7 +19,9 @@ class PvSystemGet(PvSystemBase):
 
 class PvSystemModule(PvSystemBase):
     id: int
-   
+    module_id : int
+    inverter_id : int
+
     class Config:
         from_attributes = True
         model_config = ConfigDict(arbitrary_types_allowed=True)

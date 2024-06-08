@@ -34,5 +34,10 @@ class PvSystemModule(Base):
     cec_t_noct = Column(Float , nullable=False)
     cec_v_mp_ref = Column(Float , nullable=False)
     cec_v_oc_ref = Column(Float , nullable=False)
-    system = relationship("PvSystem")
+    system = relationship("PvSystem" , back_populates='module')
     
+    def __repr__(self):
+        return f"<PvSystemModule(id={self.id}, module_name='{self.name}')>"
+
+    def __str__(self):
+        return f"PvSystemModule(id={self.id}, module_name='{self.name}')"

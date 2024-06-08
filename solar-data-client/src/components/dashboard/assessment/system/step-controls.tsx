@@ -27,6 +27,7 @@ function StepControls(props: Props) {
     }
 
     const isSaveDisabled = () => {
+        console.log({ values, initialValues })
         return values.module_id < 1
     }
 
@@ -34,6 +35,7 @@ function StepControls(props: Props) {
     const handleSave = () => {
         updateSystem(values)
     }
+
     return (
         <Box sx={{ margin: '2em' }} display='flex' justifyContent='space-between'>
             <Box>
@@ -43,7 +45,7 @@ function StepControls(props: Props) {
             </Box>
 
             <Box display='flex' gap={1}>
-                <SdButton variant='contained' type='submit' disabled={isSaveDisabled()} onClick={handlesave}><SaveIcon />Save</SdButton>
+                <SdButton variant='contained' type='submit' disabled={isSaveDisabled()} onClick={handleSave}><SaveIcon />Save</SdButton>
                 <SdButton variant='contained' onClick={handleNextClick}>{'> Next'}</SdButton>
             </Box>
 

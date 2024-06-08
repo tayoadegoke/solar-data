@@ -1,26 +1,60 @@
-from sqlalchemy.orm import Session
+from sqlalchemy import select
+from sqlalchemy.orm import Session, joinedload
 from ..utils import get_current_user
 
 from fastapi import Depends, APIRouter
 from ..data.database import get_db
 from ..data.pv_system import models as systemModels , dtos as systemDtos
 from ..data.pv_system_module import models as moduleModels, dtos as moduleDtos
-from ..data.user import dtos as userDtos
+from ..data.pv_system_inverter import models as inverterModels, dtos as inverterDtos
+from ..data.user import dtos as userDtos, models as userModel
+from ..data.location import dtos as locationDtos, models as locationModel
 
-from sqlalchemy.orm import Session
 
 
 
 router = APIRouter(tags=['PvSystem'],prefix='/pv_system')
 
+@router.get("/",response_model=None)
+def get_systems(db: Session = Depends(get_db), user:userDtos.User = Depends(get_current_user), location_id:str = ''):
+    if location_id == '':
+        return ['location id is required']
+    if user:
+         location = db.query(locationModel.Location).filter(locationModel.Location.user_id == user.id, locationModel.Location.id == int(location_id) ).first()
+         if location:
+            db_system = db.query(systemModels.PvSystem).outerjoin(moduleModels.PvSystemModule).outerjoin(inverterModels.PvSystemInverter).filter(systemModels.PvSystem.location_id == location.id).options(joinedload(systemModels.PvSystem.module), joinedload(systemModels.PvSystem.inverter)).all()
+            result = []
+            for system in db_system:
+                if system:
+                    print(system.module)
+                    system_data = {
+                        "system_id": system.id,
+                        "location_id": system.location_id,
+                         "module": {
+                                "module_id": system.module.id if system.module else None,
+                                "module_name": system.module.name if system.module else None
+                            } if system.module else None,
+                            "inverter": {
+                                "inverter_id": system.inverter.id if system.inverter else None,
+                                "inverter_name": system.inverter.name if system.inverter else None
+                            } if system.inverter else None
+                                    }
+                    result.append(system_data)
+            return result
+
 @router.post("/",response_model=None)
 def create_system(system: systemDtos.PvSystemCreate ,db: Session = Depends(get_db), user:userDtos.User = Depends(get_current_user)):
     if user:
-        db_system = systemModels.PvSystem(**system.dict())
-        db.add(db_system)
-        db.commit()
-        db.refresh(db_system)
-        return [db_system] 
+        location = db.query(locationModel.Location).filter(locationModel.Location.id == system.location_id).first()
+        if location.user_id == user.id:
+            db_system = systemModels.PvSystem(**system.dict())
+            db.add(db_system)
+            db.commit()
+            db.refresh(db_system)
+            return [db_system] 
+        else:
+            return ['Not right user']
+
 
 @router.put("/",response_model=None)
 def create_system(system: systemDtos.PvSystemCreate ,db: Session = Depends(get_db), user:userDtos.User = Depends(get_current_user)):
@@ -51,3 +85,25 @@ def get_modules(id:int, db: Session = Depends(get_db), user:userDtos.User = Depe
     if user:
         db_module = db.query(moduleModels.PvSystemModule).filter(moduleModels.PvSystemModule.id == id).first()
         return db_module
+    
+
+@router.post("/inverters",response_model=None)
+def create_inverter(inverter: inverterDtos.PvSystemInverterCreate ,db: Session = Depends(get_db), user:userDtos.User = Depends(get_current_user)):
+    if user:
+        db_inverter = inverterModels.PvSystemInverter(**inverter.dict())
+        db.add(db_inverter)
+        db.commit()
+        db.refresh(db_inverter)
+        return [db_inverter] 
+    
+@router.get("/inverters",response_model=None)
+def get_inverters(db: Session = Depends(get_db), user:userDtos.User = Depends(get_current_user)):
+    if user:
+        db_inverter = db.query(inverterModels.PvSystemInverter).all()
+        return db_inverter
+
+@router.get("/inverter/{id}",response_model=None)
+def get_inverter(id:int, db: Session = Depends(get_db), user:userDtos.User = Depends(get_current_user)):
+    if user:
+        db_inverter = db.query(inverterModels.PvSystemInverter).filter(inverterModels.PvSystemInverter.id == id).first()
+        return db_inverter

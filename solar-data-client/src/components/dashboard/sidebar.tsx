@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useRouter } from 'next/router';
 import { Box, Typography } from '@mui/material'
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import MonitorIcon from '@mui/icons-material/Monitor';
@@ -15,29 +16,44 @@ interface Props { }
 function Sidebar(props: Props) {
     const { } = props
     const { t } = useTranslation()
+    const router = useRouter()
+
 
     const menuItems = [
         {
             title: capitalizeFirstLetter(t('headerMenu.assesment').toLowerCase()),
-            icon: <AssessmentIcon />
+            icon: <AssessmentIcon />,
+            route: 'locations'
         },
         {
             title: capitalizeFirstLetter(t('headerMenu.monitor').toLowerCase()),
-            icon: <MonitorIcon />
+            icon: <MonitorIcon />,
+            route: 'monitor'
         },
         {
             title: capitalizeFirstLetter(t('headerMenu.optimize').toLowerCase()),
-            icon: <ConstructionIcon />
+            icon: <ConstructionIcon />,
+            route: 'optimize'
         },
         {
             title: capitalizeFirstLetter(t('headerMenu.editUser').toLowerCase()),
-            icon: <SettingsIcon />
+            icon: <SettingsIcon />,
+            route: 'edit-user'
         },
         {
             title: capitalizeFirstLetter(t('headerMenu.buyPackages').toLowerCase()),
-            icon: <ShoppingCartIcon />
+            icon: <ShoppingCartIcon />,
+            route: 'packages'
         }
     ]
+
+    const findActiveRoute = () => {
+        const active = menuItems.find((menu) => (router.asPath.includes(menu.route)))
+        return active?.title
+    }
+
+    const [active, setActive] = useState(findActiveRoute())
+
 
     return (
         <Box sx={{
@@ -54,11 +70,17 @@ function Sidebar(props: Props) {
                         paddingBottom: '2em',
                         cursor: 'pointer',
                         width: '100%',
+                        color: `${active === item.title ? customColors.secondary : ''}`,
                         '&:hover': {
-                            color: customColors.secondary
+                            color: `${active !== item.title ? customColors.primaryContrast : customColors.secondary}`,
+
                         }
                     }}
-                        key={item.title}
+                        key={item.route}
+                        onClick={() => {
+                            setActive(item.title)
+                            if (active !== item.title) router.push(`/${item.route}`)
+                        }}
                     >
                         <Typography pr={2} pl={2}>{item.icon}</Typography > <Typography>{item.title}</Typography>
                     </Box>

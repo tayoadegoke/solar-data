@@ -21,6 +21,7 @@ function LocationsList(props: Props) {
     const { data, isLoading, error } = useLocationsQuery(isAuthenticated)
     const { t } = useTranslation()
     const [showSystems, setShowSystems] = useState(false)
+    const [location_id, setLocationId] = useState(0)
 
     console.log({ session })
     const colProps = [
@@ -38,7 +39,7 @@ function LocationsList(props: Props) {
     ]
 
     const rowClickFn = (row: GridRowParams) => {
-
+        setLocationId(Number(row.id))
         setShowSystems(true)
     }
     console.log({ data, error })
@@ -57,7 +58,7 @@ function LocationsList(props: Props) {
                     {showSystems &&
                         <Box mt={4}>
                             <Typography>{t('titles.systems')}</Typography>
-                            <SystemList />
+                            <SystemList location_id={location_id} />
                         </Box>
 
                     }
