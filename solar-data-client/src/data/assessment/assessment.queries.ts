@@ -1,4 +1,4 @@
-import { useQuery, UseQueryOptions } from "@tanstack/react-query"
+import { useMutation, useQuery, UseQueryOptions } from "@tanstack/react-query"
 import { axiosBffInstance } from "../common"
 import { signOut } from "next-auth/react"
 
@@ -28,9 +28,18 @@ export const addLocation = async (values: any) => {
     }
 }
 
-export const updateSystem = async (values: any) => {
+export const createSystem = async (values: any) => {
     try {
-        const res = await axiosBffInstance.put('/pv_system', values)
+        const res = await axiosBffInstance.post('/pv_system', values)
+        return res.data
+    }
+    catch (e) {
+        return e
+    }
+}
+export const updateSystem = async (values: any, id: string) => {
+    try {
+        const res = await axiosBffInstance.put(`/pv_system/${id}`, values)
         return res
     }
     catch (e) {
@@ -49,28 +58,19 @@ export const getLocations = async () => {
 
 export const getSystems = async (location_id: number) => {
     try {
-        //const res = await axiosBffInstance.get(`/pv_system?location_id=${location_id}`)
-        const b =
-            [
-                {
-                    "id": 327,
-                    "inverter_count": 1,
-                    "inverter_id": 1,
-                    "inverter_name": "ABB: MICRO-0.25-I-OUTD-US-208 [208V]",
-                    "location.optimal_azimuth": 177,
-                    "location.optimal_tilt": 40,
-                    "location_id": 420,
-                    "module_id": 47,
-                    "module_name": "Advance Power API-M250",
-                    "step": 2,
-                    "subarray1_azimuth": null,
-                    "subarray1_modules_per_string": null,
-                    "subarray1_nstrings": null,
-                    "subarray1_tilt": null
-                }
-            ]
-        // return res.data
-        return b
+        const res = await axiosBffInstance.get(`/pv_system?location_id=${location_id}`)
+
+        return res.data
+    } catch (e) {
+        return Promise.reject(new Error(`request failed`))
+    }
+}
+
+export const getSystemById = async (system_id: string, location_id: string) => {
+    try {
+        const res = await axiosBffInstance.get(`/pv_system/${system_id}?location_id=${location_id}`)
+
+        return res.data
     } catch (e) {
         return Promise.reject(new Error(`request failed`))
     }
@@ -103,6 +103,9 @@ export const useSystemsQuery = (location_id: number) => {
     return useQuery({ queryKey: systemKeys.all, queryFn: () => getSystems(location_id), staleTime: Infinity })
 }
 
+export const useSystemsByIdQuery = (system_id: string, location_id: string) => {
+    return useQuery({ queryKey: systemKeys.id(system_id), queryFn: () => getSystemById(system_id, location_id), staleTime: Infinity })
+}
 export const useModulesQuery = (enabled: boolean | undefined) => {
     return useQuery({ queryKey: moduleKeys.all, queryFn: getModules, enabled, staleTime: Infinity })
 }

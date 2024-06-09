@@ -1,13 +1,14 @@
 import React from 'react'
-import { Typography } from '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import SdTable from '@/components/ui/SdTable'
 import SdSpinner from '@/components/ui/SdSpinner'
+import { useToast } from '@/utils/hooks/useToast'
 import { GridRowParams } from '@mui/x-data-grid'
 import { capitalizeFirstLetter } from '@/utils/utils'
 import { useTranslation } from 'react-i18next'
 import { GridRenderCellParams } from '@mui/x-data-grid'
-import { useSystemsQuery } from '@/data/assessment/assessment.queries'
+import { createSystem, useSystemsQuery, useSystemsByIdQuery } from '@/data/assessment/assessment.queries'
 import { useSession } from 'next-auth/react'
 
 interface Props {
@@ -16,8 +17,10 @@ interface Props {
 
 function SystemList(props: Props) {
     const { location_id } = props
+    window.sessionStorage.setItem('location_id', String(location_id))
     const router = useRouter()
     const session = useSession()
+    const toast = useToast()
     const isAuthenticated = session.status === 'authenticated' ? true : false
     const { data, isLoading } = useSystemsQuery(location_id)
     const { t } = useTranslation()
@@ -27,7 +30,7 @@ function SystemList(props: Props) {
     if (data) {
         data.map((sys) => {
             transformedData.push({
-                id: 1,
+                id: sys.id,
                 module: sys.module_name,
                 inverters: sys.inverter_name,
                 no_of_inverters: sys.inverter_count,
@@ -50,11 +53,26 @@ function SystemList(props: Props) {
 
     ]
 
-    const rowClickFn = (row: GridRowParams) => {
-        router.push(`/locations/systems/${row.id}`)
+    const rowClickFn = async (row: GridRowParams) => {
+        router.push(`/locations/systems/${row.id}?location_id=${location_id}`)
 
     }
-    console.log({ data })
+
+    const addSystem = async () => {
+        try {
+            const data = await createSystem({
+                location_id
+            })
+            console.log(data)
+            toast.showToast('success', 'system created')
+            router.push(`/locations/systems/${data[0].id}`)
+        } catch (e) {
+            console.log(e)
+            toast.showToast('error', 'Could not create system')
+        }
+
+    }
+
 
     return (
         isLoading || !data ?
@@ -63,7 +81,11 @@ function SystemList(props: Props) {
             data && data.length === 0 ?
                 <Typography>You have not added any locations yet, click Add Location to add a location.</Typography>
                 :
-                <SdTable colProps={colProps} rowProps={transformedData} rowClickFn={rowClickFn} />
+                <Box style={{ display: 'flex', flexDirection: 'column' }}>
+                    <SdTable colProps={colProps} rowProps={transformedData} rowClickFn={rowClickFn} />
+                    <Button variant='contained' style={{ marginTop: '1em', alignSelf: "flex-end" }} onClick={() => addSystem()}>{t('labels.addNewSystem')}</Button>
+                </Box>
+
 
     )
 }

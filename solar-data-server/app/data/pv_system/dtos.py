@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from pydantic import BaseModel, ConfigDict
 
 
@@ -8,6 +8,12 @@ class PvSystemBase(BaseModel):
 
 class PvSystemCreate(PvSystemBase):
    pass
+
+class PvSystemUpdate(PvSystemBase):
+    module_id: Optional[int] = None
+    inverter_id: Optional [int] =    None
+    step: int
+    inverter_count: Optional [int] = None
 
 class PvSystemGet(PvSystemBase):
     id:int

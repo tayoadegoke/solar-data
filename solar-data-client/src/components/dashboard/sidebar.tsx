@@ -78,8 +78,9 @@ function Sidebar(props: Props) {
                     }}
                         key={item.route}
                         onClick={() => {
+                            console.log(active, item.title)
                             setActive(item.title)
-                            if (active !== item.title) router.push(`/${item.route}`)
+                            if (active !== item.title || router.asPath !== `/${item.route}`) router.push(`/${item.route}`)
                         }}
                     >
                         <Typography pr={2} pl={2}>{item.icon}</Typography > <Typography>{item.title}</Typography>
