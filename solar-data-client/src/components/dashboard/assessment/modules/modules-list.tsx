@@ -48,9 +48,9 @@ function ModulesList(props: Props) {
     ]
 
     const rowClickFn = (row: GridRowParams) => {
-
         setModuleId(row.id as string)
         setFieldValue('module_id', row.id)
+        setFieldValue('step', 2)
     }
 
     return (

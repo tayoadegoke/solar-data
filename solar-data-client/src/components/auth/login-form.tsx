@@ -13,11 +13,12 @@ import SdTextField from '../ui/SdTextField';
 import SdButton from '../ui/SdButton';
 import { AuthFormProps } from './auth';
 import { signIn, useSession } from 'next-auth/react';
-
+import { useToast } from '@/utils/hooks/useToast';
 
 function LoginForm(props: AuthFormProps) {
     const { setPageState } = props
     const { t } = useTranslation()
+    const { showToast } = useToast()
 
 
     const LoginSchema = Yup.object().shape({
@@ -33,11 +34,14 @@ function LoginForm(props: AuthFormProps) {
                 validationSchema={LoginSchema}
                 onSubmit={(values, { setSubmitting }) => {
                     setTimeout(async () => {
+
                         const result = await signIn('credentials', {
                             email: values.email,
                             password: values.password,
                             redirect: false
                         })
+
+                        if (result?.status === 401) showToast('error', t('errorMsg.passwordOrEmailIsIncorrect'))
                         setSubmitting(false);
                     }, 400);
 

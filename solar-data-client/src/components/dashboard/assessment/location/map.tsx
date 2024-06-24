@@ -11,19 +11,21 @@ import { useToast } from '@/utils/hooks/useToast'
 import { TabValueProps } from './locations'
 
 interface Props {
-    changeTab: (val: TabValueProps) => void
+    changeTab: (val: TabValueProps) => void;
+    mapCenter: google.maps.LatLng | google.maps.LatLngLiteral | null | undefined;
 }
 type latLngEvent = {
     latLng: any
 }
 
-const LocationMap = ({ changeTab }: Props) => {
+const LocationMap = ({ changeTab, mapCenter }: Props) => {
     const [area, setArea] = useState(0)
     const [mapState, setMapState] = useState<google.maps.Map>()
     const [polygonLinesState, setPolygonlinesState] = useState<google.maps.Polygon>()
     const [finalPolygonLines, setFinalPolygonLines] = useState<google.maps.LatLng[]>([])
     const [renderMapToggle, setRenderMapToggle] = useState(true)
     const [coordinatesChanged, setCoordinatesChanged] = useState(false)
+
     let coordinateBool = false
 
     const { t } = useTranslation()
@@ -222,7 +224,7 @@ const LocationMap = ({ changeTab }: Props) => {
         loader.load().then(async () => {
             const { Map } = await google.maps.importLibrary("maps") as google.maps.MapsLibrary;
             map = new Map(document.getElementById("map") as HTMLElement, {
-                center: { lat: -34.397, lng: 150.644 },
+                center: mapCenter,
                 zoom: 8,
                 mapId: '4504f8b37365c3d0'
             });
@@ -234,7 +236,7 @@ const LocationMap = ({ changeTab }: Props) => {
 
     useEffect(() => {
         renderMap()
-    }, [renderMapToggle])
+    }, [renderMapToggle, mapCenter])
 
     useEffect(() => {
         // used to rerender form after polygon is dragged using coordinatesBool variable

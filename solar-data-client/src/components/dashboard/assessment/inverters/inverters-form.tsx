@@ -11,24 +11,33 @@ function ModuleForm(props: Props) {
     const { data } = props
     const { t } = useTranslation()
 
-    const physicalCharacteristics = [
+    console.log(data)
+    const datasheetParameters = [
         {
-            name: 'Module Width',
-            value: data.cec_module_width
+            name: 'Name',
+            value: data.name
         },
         {
-            name: 'Module Height',
-            value: data.cec_module_height
+            name: 'Number of MPPT inputs',
+            value: '1.000'
         }, {
-            name: 'Module area(m2)',
-            value: data.cec_area
+            name: 'Cec efficiency',
+            value: data.inv_snl_eff_cec
         }, {
-            name: 'Number Of Cells',
-            value: data.cec_n_s
+            name: 'European efficiency',
+            value: data.inv_snl_eff_euro
         }, {
-            name: 'Temperature coefficient adjustment',
-            value: data.cec_adjust
-        }
+            name: 'Maximum AC Power',
+            value: data.inv_snl_paco
+        }, {
+            name: 'Nominal AC voltage',
+            value: data.inv_snl_vac
+        }, {
+            name: 'Maximum DC Power',
+            value: data.inv_snl_pdco
+
+        },
+
     ]
 
     const additionalParameters = [
@@ -54,62 +63,34 @@ function ModuleForm(props: Props) {
         }
     ]
 
-    const otherParameters = [
+    const sandiaCoeff = [
         {
-            name: 'Name',
-            value: data.name
-        },
-        {
-            name: 'Technology',
-            value: data.technology > 0 ? 'multiSi' : 'monoSi'
-        }, {
-            name: 'Nominial efficiency',
-            value: ''
-        }, {
-            name: 'Maximum power (Pmp)',
-            value: data.cec_p_mp_ref
-        }, {
-            name: '(Pmp) temp. coefficient',
-            value: data.cec_gamma_r
-        }, {
-            name: '(Pmp) temp. coefficient',
-            value: data.cec_r_sh_ref
-        }, {
-            name: 'Max power voltage (Vmp)',
-            value: data.cec_v_mp_ref
-        }, {
-            name: 'Max power current(Imp)',
-            value: data.cec_i_mp_ref
-        }, {
-            name: 'Open circuit voltage(Vmp)',
-            value: data.cec_v_oc_ref
-        }, {
-            name: '(Voc) temp. coefficient',
-            value: ''
-        }, {
-            name: '(Voc) temp. coefficient',
-            value: data.cec_beta_oc
+            name: 'C0 (Vmp)',
+            value: data.inv_snl_c0
 
         }, {
-            name: 'Short circuit current (Isc)',
-            value: data.cec_i_sc_ref
+            name: 'C1 (Vmp)',
+            value: data.inv_snl_c1
+
         }, {
-            name: '(Isc) temp. coefficient',
-            value: ''
+            name: 'C2 (Vmp)',
+            value: data.inv_snl_c2
+
+        }, {
+            name: 'C3 (Vmp)',
+            value: data.inv_snl_c3
+
         },
-        {
-            name: '(Isc) temp. coefficient',
-            value: ''
-        }
+
     ]
     return (
         <>
             <Box style={{ width: '100%', display: 'flex', gap: '2%' }}>
 
                 <Box style={{ width: '49%', backgroundColor: 'rgba(0, 0, 0, 0.05)', padding: '2em', boxShadow: '3px 6px 3px 0px rgba(168, 163, 163, 0.5)' }}>
-                    <Typography variant='h5'>{t('labels.physicalCharacteristics')}</Typography>
+                    <Typography variant='h5'>{t('labels.datasheetParameters')}</Typography>
                     <Box>
-                        {physicalCharacteristics.map((c) => {
+                        {datasheetParameters.map((c) => {
                             return (
                                 <Grid display='flex' justifyContent='space-between' alignItems='center' key={c.name} mt={2}>
 
@@ -127,34 +108,12 @@ function ModuleForm(props: Props) {
                         }
                     </Box>
 
-                    <Box mt={4}>
-                        <Typography variant='h5'>{t('labels.aditionalParameteres')}</Typography>
-                        <Box>
-                            {additionalParameters.map((c) => {
-                                return (
-                                    <Grid display='flex' justifyContent='space-between' alignItems='center' key={c.name} mt={2}>
-
-                                        <Grid item>
-                                            <Typography>{c.name}</Typography>
-                                        </Grid>
-                                        <Grid item>
-                                            <TextField name='physical' disabled value={c.value} sx={{ 'input': { height: '2px' } }} />
-
-                                        </Grid>
-
-                                    </Grid>
-                                )
-                            })
-                            }
-                        </Box>
-                    </Box>
-
                 </Box>
 
                 <Box style={{ width: '49%', backgroundColor: 'rgba(0, 0, 0, 0.05)', padding: '2em', boxShadow: '3px 6px 3px 0px rgba(168, 163, 163, 0.5)' }}>
-
+                    <Typography variant='h5'>{t('labels.sandriaCoefficients')}</Typography>
                     <Box>
-                        {otherParameters.map((c) => {
+                        {sandiaCoeff.map((c) => {
                             return (
 
                                 <Grid display='flex' justifyContent='space-between' alignItems='center' key={c.name} mt={2}>

@@ -4,8 +4,9 @@ import { Box } from "@mui/material"
 import { useFormikContext } from "formik"
 import SaveIcon from '@mui/icons-material/Save';
 import SdButton from '@/components/ui/SdButton'
-import { updateSystem } from '@/data/assessment/assessment.queries';
+import { locationKeys, updateSystem } from '@/data/assessment/assessment.queries';
 import { useToast } from '@/utils/hooks/useToast';
+import { useQueryClient } from '@tanstack/react-query';
 
 
 interface Props {
@@ -17,6 +18,7 @@ function StepControls(props: Props) {
     const { setActiveStep, activeStep } = props
     const router = useRouter()
     const { showToast } = useToast()
+    const queryClient = useQueryClient()
     const { initialValues, values, submitForm } = useFormikContext();
 
     console.log(router.query?.id)
@@ -41,6 +43,7 @@ function StepControls(props: Props) {
         try {
             await updateSystem(values, router.query?.id as string)
             showToast('success', 'System updated successfully')
+            queryClient.invalidateQueries({ queryKey: locationKeys.all })
             router.push('/locations')
         } catch {
             showToast('error', 'Error updating system')

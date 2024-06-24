@@ -58,7 +58,7 @@ function Sidebar(props: Props) {
     return (
         <Box sx={{
             width: '250px', backgroundColor: customColors.grey, boxShadow: '2px 5px 10px 0px rgba(0, 0, 0, 0.5)', display: 'flex',
-            flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', paddingTop: '1.5em', minHeight: '100%'
+            flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', paddingTop: '1.5em', minHeight: '100vh',
 
         }}>
 

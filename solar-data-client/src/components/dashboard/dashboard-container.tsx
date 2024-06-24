@@ -13,11 +13,12 @@ function DashboardContainer(props: Props) {
     useEffect(() => {
         //to access parent div
         document.getElementById('top-div')?.parentElement?.style.setProperty('height', '100%')
+        document.getElementById('top-div')?.parentElement?.style.setProperty('min-height', '100vh')
     })
 
     return (
 
-        <Box style={{ display: 'flex', minHeight: 'max-content', alignItems: 'stretch' }} id={'top-div'}>
+        <Box style={{ display: 'flex', minHeight: 'max-content', alignItems: 'stretch', }} id={'top-div'}>
             <Sidebar />
             <TabProvider>
                 {children}

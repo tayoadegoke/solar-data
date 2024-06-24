@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Box, Button, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import SdTable from '@/components/ui/SdTable'
@@ -11,12 +11,13 @@ import { GridRenderCellParams } from '@mui/x-data-grid'
 import { createSystem, useSystemsQuery, useSystemsByIdQuery } from '@/data/assessment/assessment.queries'
 import { useSession } from 'next-auth/react'
 
+
 interface Props {
     location_id: number
 }
 
 function SystemList(props: Props) {
-    const { location_id } = props
+    const { location_id, } = props
     window.sessionStorage.setItem('location_id', String(location_id))
     const router = useRouter()
     const session = useSession()
@@ -28,7 +29,7 @@ function SystemList(props: Props) {
     let transformedData: any = []
 
     if (data) {
-        data.map((sys) => {
+        data.map((sys: any) => {
             transformedData.push({
                 id: sys.id,
                 module: sys.module_name,
@@ -65,7 +66,7 @@ function SystemList(props: Props) {
             })
             console.log(data)
             toast.showToast('success', 'system created')
-            router.push(`/locations/systems/${data[0].id}`)
+            router.push(`/locations/systems/${data[0].id}?location_id=${location_id}`)
         } catch (e) {
             console.log(e)
             toast.showToast('error', 'Could not create system')
@@ -73,18 +74,24 @@ function SystemList(props: Props) {
 
     }
 
+    useEffect(() => {
+
+    }, [location_id])
 
     return (
         isLoading || !data ?
             < SdSpinner />
             :
-            data && data.length === 0 ?
-                <Typography>You have not added any locations yet, click Add Location to add a location.</Typography>
-                :
-                <Box style={{ display: 'flex', flexDirection: 'column' }}>
+            <Box style={{ display: 'flex', flexDirection: 'column' }}>
+                {data && data.length === 0 ?
+                    <Typography mt={4} variant='body2'>You have not added any systems yet, click Add System to add a system.</Typography>
+                    :
+
+
                     <SdTable colProps={colProps} rowProps={transformedData} rowClickFn={rowClickFn} />
-                    <Button variant='contained' style={{ marginTop: '1em', alignSelf: "flex-end" }} onClick={() => addSystem()}>{t('labels.addNewSystem')}</Button>
-                </Box>
+                }
+                <Button variant='contained' style={{ marginTop: '1em', alignSelf: "flex-end" }} onClick={() => addSystem()}>{t('labels.addNewSystem')}</Button>
+            </Box>
 
 
     )

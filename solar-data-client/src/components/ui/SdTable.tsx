@@ -19,18 +19,40 @@ export default function SdTable({ colProps, rowProps, rowClickFn }: SdTableProps
 
 
     const columns: GridColDef[] = colProps.map((col) => {
-        return { field: col.field, headerName: col.headerName, renderCell: col?.renderCell, flex: 1 }
+        return { field: col.field, headerName: col.headerName, renderCell: col?.renderCell, flex: 1, }
     })
 
     return (
         <div style={{ height: 'auto', width: '100%' }}>
             <DataGrid rows={rows} disableRowSelectionOnClick columns={columns} sx={{
+
+                '& .MuiDataGrid-columnHeaderTitleContainer': {
+                    whiteSpace: 'wrap'
+                },
+                '& .MuiDataGrid-columnHeaderTitle': {
+                    whiteSpace: 'normal',
+                    lineHeight: 'normal'
+                },
+
                 '& .MuiDataGrid-columnHeader': {
                     backgroundColor: customColors.secondary,
                     color: customColors.secondaryContrast,
+                    textWrap: 'wrap',
+                    whiteSpace: 'normal',
+                    lineHeight: 'normal',
                 },
                 '& .MuiDataGrid-row:hover': {
                     cursor: 'pointer'
+                },
+                '& .MuiDataGrid-cell': {
+                    whiteSpace: 'normal',
+                    lineHeight: 'normal',
+                    wordBreak: 'break-word',
+                    display: 'flex',
+                    alignItems: 'center',
+                    textAlign: 'center',
+
+
                 },
                 minHeight: '150px'
 

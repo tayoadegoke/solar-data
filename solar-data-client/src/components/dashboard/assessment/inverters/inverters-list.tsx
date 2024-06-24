@@ -7,60 +7,56 @@ import { GridRowParams } from '@mui/x-data-grid'
 import { capitalizeFirstLetter } from '@/utils/utils'
 import { useTranslation } from 'react-i18next'
 import { GridRenderCellParams } from '@mui/x-data-grid'
-import { useModulesQuery } from '@/data/assessment/assessment.queries'
+import { useInvertersQuery } from '@/data/assessment/assessment.queries'
 import { useSession } from 'next-auth/react'
 import { useFormikContext } from 'formik'
 
 
 interface Props {
-    setModuleId: (moduleId: string | null) => void
+    setInverterId: (inverterId: string | null) => void
 }
 
 function ModulesList(props: Props) {
-    const { setModuleId } = props
+    const { setInverterId } = props
     const router = useRouter()
     const session = useSession()
     const isAuthenticated = session.status === 'authenticated' ? true : false
-    const { data, isLoading } = useModulesQuery(isAuthenticated)
-    const { setFieldValue } = useFormikContext()
+    const { data, isLoading, } = useInvertersQuery(isAuthenticated)
+    const { setFieldValue, values } = useFormikContext()
     const { t } = useTranslation()
+
 
     const colProps = [
         {
             field: 'name',
             headerName: t('labels.name'),
         },
-        { field: 'technology', headerName: t('labels.technology'), renderCell: (param: GridRenderCellParams) => param.formattedValue ? 'MultiSi' : 'MonoSi' },
-        { field: 'cec_is_bifacial', headerName: t('labels.bifacial'), renderCell: (param: GridRenderCellParams) => param.formattedValue ? 'Yes' : 'No' },
-        {
-            field: 'cec_p_mp_ref', headerName: t('labels.maximumPower'), renderCell: (param: GridRenderCellParams) => param.formattedValue
-
-        },
-        {
-            field: 'cec_gamma_r', headerName: t('labels.temperatureCoefficient'), renderCell: (param: GridRenderCellParams) => param.formattedValue
-
-        },
-        {
-            field: 'cec_area', headerName: t('labels.moduleArea'), renderCell: (param: GridRenderCellParams) => param.formattedValue
-
-        },
+        { field: 'inv_snl_eff_cec', headerName: t('labels.cecEfficiency'), renderCell: (param: GridRenderCellParams) => Number(param.formattedValue).toFixed(3) },
+        { field: 'inv_snl_eff_euro', headerName: t('labels.europeanEfficiency'), renderCell: (param: GridRenderCellParams) => Number(param.formattedValue).toFixed(3) },
+        { field: 'inv_snl_paco', headerName: t('labels.maximumACPower') },
+        { field: 'inv_snl_pdco', headerName: t('labels.maximumDcPower'), renderCell: (param: GridRenderCellParams) => Number(param.formattedValue).toFixed(3) },
+        { field: 'inv_snl_pso', headerName: t('labels.operatingPowerConsumption'), renderCell: (param: GridRenderCellParams) => Number(param.formattedValue).toFixed(3) },
+        { field: 'inv_snl_pnt', headerName: t('labels.nightPowerConsumption'), renderCell: (param: GridRenderCellParams) => Number(param.formattedValue).toFixed(3) },
+        { field: 'mppt_low_inverter', headerName: t('labels.minimumMpptDcVoltage') },
+        { field: 'inv_snl_vdco', headerName: t('labels.nominalDcVoltage') },
+        { field: 'mppt_hi_inverter', headerName: t('labels.maximumMpptDcVoltage') },
 
     ]
 
     const rowClickFn = (row: GridRowParams) => {
 
-        setModuleId(row.id as string)
-        setFieldValue('module_id', row.id)
+        setInverterId(row.id as string)
+        setFieldValue('inverter_id', row.id)
+        setFieldValue('step', 3)
+        console.log(values)
     }
 
     return (
         isLoading || !data ?
             < SdSpinner />
             :
-            data && data.length === 0 ?
-                <Typography>You have not added any locations yet, click Add Location to add a location.</Typography>
-                :
-                <SdTable colProps={colProps} rowProps={data} rowClickFn={rowClickFn} />
+            data && (data.length > 0) &&
+            <SdTable colProps={colProps} rowProps={data} rowClickFn={rowClickFn} />
 
     )
 }
