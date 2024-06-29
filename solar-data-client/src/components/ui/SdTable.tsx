@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { DataGrid, GridRowsProp, GridColDef, GridRenderCellParams, GridRowParams } from '@mui/x-data-grid';
 import { customColors } from '@/styles/custom-theme';
+import useSdMediaQuery from '@/utils/hooks/useMediaQuery';
 
 
 type ColProps = { field: string, headerName: string, renderCell?: (params: GridRenderCellParams) => any }[]
@@ -13,6 +14,7 @@ type SdTableProps = {
 
 export default function SdTable({ colProps, rowProps, rowClickFn }: SdTableProps) {
 
+    const { xs } = useSdMediaQuery()
     const rows: GridRowsProp = rowProps.map((row) => {
         return { ...row as GridRowsProp }
     })
@@ -60,6 +62,7 @@ export default function SdTable({ colProps, rowProps, rowClickFn }: SdTableProps
                 onRowClick={(row) => {
                     rowClickFn && rowClickFn(row)
                 }}
+                getRowHeight={() => xs ? 90 : undefined}
             />
         </div>
     );

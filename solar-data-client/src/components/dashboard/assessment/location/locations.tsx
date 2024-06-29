@@ -23,14 +23,16 @@ function Locations(props: Props) {
 
 
             <SdTabs tabs={[t('headerMenu.locations'), t('sidebarMenu.addLocation')]} />
-            {activeTab === t('sidebarMenu.addLocation') ?
+            <Box >
+                {activeTab === t('sidebarMenu.addLocation') ?
 
-                <>
-                    <Typography ml={2} mb={1}>{t('labels.createLocation')}</Typography>
-                    <MapSearch setMapCenter={setMapCenter} />
-                    <LocationMap changeTab={changeTab} mapCenter={mapCenter} />
-                </>
-                : <LocationsList />}
+                    <Box sx={{ marginRight: '2em' }}>
+                        <Typography ml={2} mb={1}>{t('labels.createLocation')}</Typography>
+                        <MapSearch setMapCenter={setMapCenter} />
+                        <LocationMap changeTab={changeTab} mapCenter={mapCenter} />
+                    </Box>
+                    : <LocationsList />}
+            </Box>
 
         </Box>
 

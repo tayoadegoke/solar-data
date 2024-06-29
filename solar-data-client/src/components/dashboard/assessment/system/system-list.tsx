@@ -5,11 +5,9 @@ import SdTable from '@/components/ui/SdTable'
 import SdSpinner from '@/components/ui/SdSpinner'
 import { useToast } from '@/utils/hooks/useToast'
 import { GridRowParams } from '@mui/x-data-grid'
-import { capitalizeFirstLetter } from '@/utils/utils'
 import { useTranslation } from 'react-i18next'
 import { GridRenderCellParams } from '@mui/x-data-grid'
-import { createSystem, useSystemsQuery, useSystemsByIdQuery } from '@/data/assessment/assessment.queries'
-import { useSession } from 'next-auth/react'
+import { createSystem, useSystemsQuery } from '@/data/assessment/assessment.queries'
 
 
 interface Props {
@@ -18,11 +16,8 @@ interface Props {
 
 function SystemList(props: Props) {
     const { location_id, } = props
-    window.sessionStorage.setItem('location_id', String(location_id))
     const router = useRouter()
-    const session = useSession()
     const toast = useToast()
-    const isAuthenticated = session.status === 'authenticated' ? true : false
     const { data, isLoading } = useSystemsQuery(location_id)
     const { t } = useTranslation()
 
@@ -64,11 +59,10 @@ function SystemList(props: Props) {
             const data = await createSystem({
                 location_id
             })
-            console.log(data)
+
             toast.showToast('success', 'system created')
             router.push(`/locations/systems/${data[0].id}?location_id=${location_id}`)
         } catch (e) {
-            console.log(e)
             toast.showToast('error', 'Could not create system')
         }
 

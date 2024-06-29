@@ -53,6 +53,8 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], db: Se
         if username is None:
             raise credentials_exception
         token_data = TokenData(user=username)
+    except jwt.exceptions.ExpiredSignatureError:
+        raise credentials_exception
     except JWTError:
         raise credentials_exception
    

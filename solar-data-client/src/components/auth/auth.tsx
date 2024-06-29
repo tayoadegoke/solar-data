@@ -16,10 +16,11 @@ function Auth() {
     const [pageState, setPageState] = useState<PageState>('login')
     const session = useSession()
     const router = useRouter()
+
     session.status === 'authenticated' && router.push('/locations')
 
-
     return (
+        session.status === 'unauthenticated' &&
 
         <Box textAlign={'center'} my={6}>
             <Image src="/solar-data-colored-logo.png" width={207} alt='solar data logo' height={160} priority />

@@ -9,6 +9,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { customColors } from '@/styles/custom-theme';
 import { useTranslation } from 'next-i18next';
 import { capitalizeFirstLetter } from '@/utils/utils';
+import useSdMediaQuery from '@/utils/hooks/useMediaQuery';
 
 
 interface Props { }
@@ -53,11 +54,12 @@ function Sidebar(props: Props) {
     }
 
     const [active, setActive] = useState(findActiveRoute())
+    const { lg } = useSdMediaQuery()
 
 
     return (
         <Box sx={{
-            width: '250px', backgroundColor: customColors.grey, boxShadow: '2px 5px 10px 0px rgba(0, 0, 0, 0.5)', display: 'flex',
+            width: '250px', backgroundColor: customColors.grey, boxShadow: '2px 5px 10px 0px rgba(0, 0, 0, 0.5)', display: `${lg ? 'flex' : 'none'}`,
             flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', paddingTop: '1.5em', minHeight: '100vh',
 
         }}>

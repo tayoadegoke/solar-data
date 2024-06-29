@@ -1,11 +1,11 @@
-import { axiosServerInstance } from "../common"
+import { axiosBffInstance } from "../common"
 
 import { useQuery } from "@tanstack/react-query"
 
 
 export const registerUser = async (values: any) => {
     try {
-        const res = await axiosServerInstance.post('/register', values)
+        const res = await axiosBffInstance.post('/register', values)
         return res
     } catch (e) {
         return e
@@ -15,7 +15,7 @@ export const registerUser = async (values: any) => {
 
 export const loginUser = async (values: any) => {
     try {
-        const res = await axiosServerInstance.post('/login', values)
+        const res = await axiosBffInstance.post('/login', values)
         return res
     } catch (e) {
         return e

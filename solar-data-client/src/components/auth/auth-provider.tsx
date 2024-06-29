@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { Skeleton } from '@mui/material'
-import { axiosServerInstance, axiosBffInstance } from '@/data/common'
+import { axiosBffInstance } from '@/data/common'
 
 interface Props {
     children: ReactNode

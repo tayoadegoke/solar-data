@@ -25,7 +25,7 @@ function LocationsList(props: Props) {
     const [location_id, setLocationId] = useState(0)
     const { data: systemsData, isLoading: systemsLoading } = useSystemsQuery(location_id)
 
-    console.log({ session })
+
     const colProps = [
         {
             field: 'ghi',

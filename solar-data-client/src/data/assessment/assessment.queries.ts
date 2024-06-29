@@ -39,24 +39,6 @@ export const addLocation = async (values: any) => {
     }
 }
 
-export const getMapPredictions = async (location: string) => {
-    try {
-        // const res = await axios.get(`https://maps.googleapis.com/maps/api/place/autocomplete/json
-        // ?input=${location}
-        // &types=geocode
-        // &key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`, {
-        //     headers: {
-        //         'Access-Control-Allow-Origin': '*', // This is often ignored by browsers
-        //         'Content-Type': 'application/json'
-        //     }
-        // })
-
-        // return res
-
-    } catch (e) {
-        return e
-    }
-}
 export const createSystem = async (values: any) => {
     try {
         const res = await axiosBffInstance.post('/pv_system', values)

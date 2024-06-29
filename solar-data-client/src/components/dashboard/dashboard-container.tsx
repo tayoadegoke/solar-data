@@ -2,6 +2,7 @@ import React, { ReactNode, useEffect } from 'react'
 import Sidebar from '@/components/dashboard/sidebar'
 import { Box } from '@mui/material'
 import { TabProvider } from '@/utils/hooks/useTabs'
+import useSdMediaQuery from '@/utils/hooks/useMediaQuery'
 
 interface Props {
     children: ReactNode
@@ -9,6 +10,7 @@ interface Props {
 
 function DashboardContainer(props: Props) {
     const { children } = props
+    const { xs } = useSdMediaQuery()
 
     useEffect(() => {
         //to access parent div

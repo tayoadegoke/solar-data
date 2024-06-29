@@ -28,10 +28,10 @@ function App({ Component, pageProps }: AppProps) {
       <ThemeProvider theme={theme}>
         <LanguageProvider>
           <div className={`${roboto.className}`} style={{ height: '100%' }}>
-            <NoSSRNavigation />
             <SessionProvider session={pageProps.session}>
               <AuthProvider>
                 <ToastProvider>
+                  <NoSSRNavigation />
                   <Component {...pageProps} />
                 </ToastProvider>
               </AuthProvider>

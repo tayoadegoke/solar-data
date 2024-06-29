@@ -3,20 +3,15 @@ import { signOut, getSession } from "next-auth/react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 
-export const axiosServerInstance = axios.create({
-    baseURL: 'http://127.0.0.1:8000'
-})
-
 
 export const axiosBffInstance = axios.create({
     baseURL: 'http://localhost:8000'
 })
 
 
+const MAX_RETRIES = 3;
 
 axiosBffInstance.interceptors.request.use(async function (req) {
-
-    console.log(req.headers, 'headers session common')
     return req;
 }, function (error) {
     console.log({ error })
@@ -27,10 +22,27 @@ axiosBffInstance.interceptors.request.use(async function (req) {
 axiosBffInstance.interceptors.response.use(function (response) {
     return response;
 }, function (error) {
-    console.log({ error })
-    if (error.code) {
-        // console.log('signing out', error.response.message)
-        // signOut()
+
+    // Retry logic
+    const { config } = error;
+    if (!config || !config.__retryCount) {
+        config.__retryCount = 0;
     }
+
+    if (config.__retryCount < MAX_RETRIES) {
+        config.__retryCount += 1;
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve(axiosBffInstance(config));
+            }, 1000); // Retry after 1 second
+        });
+    }
+
+    // Handle the final error after retries
+    if (error.response && error.response.status === 401) {
+        signOut();
+    }
+
     return Promise.reject(error);
+
 })

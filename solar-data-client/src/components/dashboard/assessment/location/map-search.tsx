@@ -1,6 +1,4 @@
-import { getMapPredictions } from '@/data/assessment/assessment.queries';
 import { Autocomplete, Box, TextField } from '@mui/material'
-import { Autocomplete as GoogleAutoComplete } from '@react-google-maps/api';
 import { Loader } from "@googlemaps/js-api-loader"
 import React, { useState, useEffect } from 'react'
 
