@@ -21,7 +21,6 @@ function StepControls(props: Props) {
     const queryClient = useQueryClient()
     const { initialValues, values, submitForm } = useFormikContext();
 
-    console.log(router.query?.id)
     const handleNextClick = () => {
         if (activeStep < 4)
             setActiveStep((activeStep + 1))
@@ -34,8 +33,7 @@ function StepControls(props: Props) {
     }
 
     const isSaveDisabled = () => {
-        console.log({ values, initialValues })
-        return values.module_id < 1
+        return (values as any).module_id < 1
     }
 
 

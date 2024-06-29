@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query"
 export const registerUser = async (values: any) => {
     try {
         const res = await axiosBffInstance.post('/register', values)
-        return res
+        return res as any
     } catch (e) {
         return e
 
