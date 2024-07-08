@@ -38,9 +38,11 @@ export const authOptions = {
   pages: {
     signIn: '/'
   },
+
   callbacks: {
     async jwt({ user, token }) {
       //   update token if user is returned
+
       if (user) {
         token.email = user.email;
         token.accessToken = (user as any).accessToken;
@@ -49,6 +51,7 @@ export const authOptions = {
       return token;
     },
     async session({ session, token, }: { session: any; token: any }) {
+
       session.user.email = token.email
       session.accessToken = token.accessToken
 

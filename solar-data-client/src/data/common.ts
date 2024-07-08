@@ -5,7 +5,7 @@ import { authOptions } from "@/pages/api/auth/[...nextauth]";
 
 
 export const axiosBffInstance = axios.create({
-    baseURL: 'http://localhost:8000'
+    baseURL: process.env.NEXT_PUBLIC_BASE_URL
 })
 
 
