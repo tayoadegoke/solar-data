@@ -1,6 +1,7 @@
 from fastapi import FastAPI , Depends
 from fastapi.middleware.cors import CORSMiddleware
 from .data.database import engine,Base,get_db
+from .data.seeding.seed import seed
 from sqlalchemy.orm import Session
 from .controllers import auth, location, pv_system
 from .config import Settings
@@ -21,6 +22,7 @@ app.add_middleware(
 )
 
 Base.metadata.create_all(bind=engine)
+seed()
 
 app.include_router(auth.router)
 app.include_router(location.router)
