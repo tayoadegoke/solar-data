@@ -1,0 +1,768 @@
+swagger: '2.0'
+info:
+  title: FastAPI
+  version: 0.1.0
+host: sd-gateway-66csnvffcq-nw.a.run.app
+schemes:
+  - https
+paths:
+  /:
+    get:
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: Successful Response
+          schema: {}
+      operationId: read_root__get
+      summary: Read Root
+  /location:
+    get:
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: Successful Response
+          schema:
+            items:
+              $ref: '#/definitions/LocationGet'
+            title: Response Get Locations Location  Get
+            type: array
+      security:
+        - apiKey: []
+        - OAuth2PasswordBearer: []
+      tags:
+        - Location
+      operationId: get_locations_location__get
+      summary: Get Locations
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/LocationCreate'
+      responses:
+        '200':
+          description: Successful Response
+          schema:
+            items:
+              $ref: '#/definitions/Location'
+            title: Response Create Location Location  Post
+            type: array
+        '422':
+          description: Validation Error
+          schema:
+            $ref: '#/definitions/HTTPValidationError'
+      security:
+        - apiKey: []
+        - OAuth2PasswordBearer: []
+      tags:
+        - Location
+      operationId: create_location_location__post
+      summary: Create Location
+  /login:
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/UserLogin'
+      responses:
+        '200':
+          description: Successful Response
+          schema:
+            $ref: '#/definitions/Token'
+        '422':
+          description: Validation Error
+          schema:
+            $ref: '#/definitions/HTTPValidationError'
+      tags:
+        - Auth
+      operationId: login_user_login_post
+      summary: Login User
+  /pv_system:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - default: ''
+          in: query
+          name: location_id
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          schema: {}
+        '422':
+          description: Validation Error
+          schema:
+            $ref: '#/definitions/HTTPValidationError'
+      security:
+        - apiKey: []
+        - OAuth2PasswordBearer: []
+      tags:
+        - PvSystem
+      operationId: get_systems_pv_system__get
+      summary: Get Systems
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/PvSystemCreate'
+      responses:
+        '200':
+          description: Successful Response
+          schema: {}
+        '422':
+          description: Validation Error
+          schema:
+            $ref: '#/definitions/HTTPValidationError'
+      security:
+        - apiKey: []
+        - OAuth2PasswordBearer: []
+      tags:
+        - PvSystem
+      operationId: create_system_pv_system__post
+      summary: Create System
+  '/pv_system/inverter/{id}':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Successful Response
+          schema: {}
+        '422':
+          description: Validation Error
+          schema:
+            $ref: '#/definitions/HTTPValidationError'
+      security:
+        - apiKey: []
+        - OAuth2PasswordBearer: []
+      tags:
+        - PvSystem
+      operationId: get_inverter_pv_system_inverter__id__get
+      summary: Get Inverter
+  /pv_system/inverters:
+    get:
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: Successful Response
+          schema: {}
+      security:
+        - apiKey: []
+        - OAuth2PasswordBearer: []
+      tags:
+        - PvSystem
+      operationId: get_inverters_pv_system_inverters_get
+      summary: Get Inverters
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/PvSystemInverterCreate'
+      responses:
+        '200':
+          description: Successful Response
+          schema: {}
+        '422':
+          description: Validation Error
+          schema:
+            $ref: '#/definitions/HTTPValidationError'
+      security:
+        - apiKey: []
+        - OAuth2PasswordBearer: []
+      tags:
+        - PvSystem
+      operationId: create_inverter_pv_system_inverters_post
+      summary: Create Inverter
+  /pv_system/modules:
+    get:
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: Successful Response
+          schema: {}
+      security:
+        - apiKey: []
+        - OAuth2PasswordBearer: []
+      tags:
+        - PvSystem
+      operationId: get_modules_pv_system_modules_get
+      summary: Get Modules
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/PvSystemModuleCreate'
+      responses:
+        '200':
+          description: Successful Response
+          schema: {}
+        '422':
+          description: Validation Error
+          schema:
+            $ref: '#/definitions/HTTPValidationError'
+      security:
+        - apiKey: []
+        - OAuth2PasswordBearer: []
+      tags:
+        - PvSystem
+      operationId: create_module_pv_system_modules_post
+      summary: Create Module
+  '/pv_system/modules/{id}':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Successful Response
+          schema: {}
+        '422':
+          description: Validation Error
+          schema:
+            $ref: '#/definitions/HTTPValidationError'
+      security:
+        - apiKey: []
+        - OAuth2PasswordBearer: []
+      tags:
+        - PvSystem
+      operationId: get_modules_pv_system_modules__id__get
+      summary: Get Modules
+  '/pv_system/{system_id}':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: system_id
+          required: true
+          type: integer
+        - default: ''
+          in: query
+          name: location_id
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          schema: {}
+        '422':
+          description: Validation Error
+          schema:
+            $ref: '#/definitions/HTTPValidationError'
+      security:
+        - apiKey: []
+        - OAuth2PasswordBearer: []
+      tags:
+        - PvSystem
+      operationId: get_system_pv_system__system_id__get
+      summary: Get System
+    put:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: system_id
+          required: true
+          type: integer
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/PvSystemUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          schema: {}
+        '422':
+          description: Validation Error
+          schema:
+            $ref: '#/definitions/HTTPValidationError'
+      security:
+        - apiKey: []
+        - OAuth2PasswordBearer: []
+      tags:
+        - PvSystem
+      operationId: update_system_pv_system__system_id__put
+      summary: Update System
+  /register:
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/UserCreate'
+      responses:
+        '200':
+          description: Successful Response
+          schema:
+            items:
+              $ref: '#/definitions/User'
+            title: Response Create User Register Post
+            type: array
+        '422':
+          description: Validation Error
+          schema:
+            $ref: '#/definitions/HTTPValidationError'
+      tags:
+        - Auth
+      operationId: create_user_register_post
+      summary: Create User
+definitions:
+  Coordinates:
+    properties:
+      lat:
+        title: Lat
+        type: number
+      lng:
+        title: Lng
+        type: number
+    required:
+      - lat
+      - lng
+    title: Coordinates
+    type: object
+  HTTPValidationError:
+    properties:
+      detail:
+        items:
+          $ref: '#/definitions/ValidationError'
+        title: Detail
+        type: array
+    title: HTTPValidationError
+    type: object
+  Location:
+    properties:
+      id:
+        title: Id
+        type: integer
+      is_active:
+        title: Is Active
+        type: boolean
+    required:
+      - id
+      - is_active
+    title: Location
+    type: object
+  LocationCreate:
+    properties:
+      area:
+        title: Area
+        type: number
+      coordinates:
+        items:
+          $ref: '#/definitions/Coordinates'
+        title: Coordinates
+        type: array
+      ghi:
+        title: Ghi
+        type: integer
+      name:
+        title: Name
+        type: string
+    required:
+      - name
+      - area
+      - ghi
+      - coordinates
+    title: LocationCreate
+    type: object
+  LocationGet:
+    properties:
+      area:
+        title: Area
+        type: number
+      coordinates:
+        items:
+          $ref: '#/definitions/Coordinates'
+        title: Coordinates
+        type: array
+      ghi:
+        title: Ghi
+        type: integer
+      id:
+        title: Id
+        type: integer
+      is_active:
+        title: Is Active
+        type: boolean
+      name:
+        title: Name
+        type: string
+    required:
+      - id
+      - name
+      - area
+      - ghi
+      - coordinates
+      - is_active
+    title: LocationGet
+    type: object
+  PvSystemCreate:
+    properties:
+      location_id:
+        title: Location Id
+        type: integer
+    required:
+      - location_id
+    title: PvSystemCreate
+    type: object
+  PvSystemInverterCreate:
+    properties:
+      inv_snl_c0:
+        title: Inv Snl C0
+        type: number
+      inv_snl_c1:
+        title: Inv Snl C1
+        type: number
+      inv_snl_c2:
+        title: Inv Snl C2
+        type: number
+      inv_snl_c3:
+        title: Inv Snl C3
+        type: number
+      inv_snl_eff_cec:
+        title: Inv Snl Eff Cec
+        type: number
+      inv_snl_eff_euro:
+        title: Inv Snl Eff Euro
+        type: number
+      inv_snl_idcmax:
+        title: Inv Snl Idcmax
+        type: number
+      inv_snl_paco:
+        title: Inv Snl Paco
+        type: integer
+      inv_snl_pdco:
+        title: Inv Snl Pdco
+        type: number
+      inv_snl_pnt:
+        title: Inv Snl Pnt
+        type: number
+      inv_snl_pso:
+        title: Inv Snl Pso
+        type: number
+      inv_snl_vac:
+        title: Inv Snl Vac
+        type: integer
+      inv_snl_vdcmax:
+        title: Inv Snl Vdcmax
+        type: integer
+      inv_snl_vdco:
+        title: Inv Snl Vdco
+        type: integer
+      mppt_hi_inverter:
+        title: Mppt Hi Inverter
+        type: integer
+      mppt_low_inverter:
+        title: Mppt Low Inverter
+        type: integer
+      name:
+        title: Name
+        type: string
+    required:
+      - inv_snl_c0
+      - inv_snl_c1
+      - inv_snl_c2
+      - inv_snl_c3
+      - inv_snl_eff_cec
+      - inv_snl_eff_euro
+      - inv_snl_idcmax
+      - inv_snl_paco
+      - inv_snl_pdco
+      - inv_snl_pnt
+      - inv_snl_pso
+      - inv_snl_vac
+      - inv_snl_vdcmax
+      - inv_snl_vdco
+      - mppt_hi_inverter
+      - mppt_low_inverter
+      - name
+    title: PvSystemInverterCreate
+    type: object
+  PvSystemModuleCreate:
+    properties:
+      cec_a_ref:
+        title: Cec A Ref
+        type: number
+      cec_adjust:
+        title: Cec Adjust
+        type: number
+      cec_alpha_sc:
+        title: Cec Alpha Sc
+        type: number
+      cec_area:
+        title: Cec Area
+        type: number
+      cec_beta_oc:
+        title: Cec Beta Oc
+        type: number
+      cec_bifacial_ground_clearance_height:
+        title: Cec Bifacial Ground Clearance Height
+        type: number
+      cec_bifacial_transmission_factor:
+        title: Cec Bifacial Transmission Factor
+        type: number
+      cec_bifaciality:
+        title: Cec Bifaciality
+        type: number
+      cec_gamma_r:
+        title: Cec Gamma R
+        type: number
+      cec_gap_spacing:
+        title: Cec Gap Spacing
+        type: number
+      cec_i_l_ref:
+        title: Cec I L Ref
+        type: number
+      cec_i_mp_ref:
+        title: Cec I Mp Ref
+        type: number
+      cec_i_o_ref:
+        title: Cec I O Ref
+        type: number
+      cec_i_sc_ref:
+        title: Cec I Sc Ref
+        type: number
+      cec_is_bifacial:
+        title: Cec Is Bifacial
+        type: boolean
+      cec_module_height:
+        title: Cec Module Height
+        type: number
+      cec_module_width:
+        title: Cec Module Width
+        type: number
+      cec_mounting_config:
+        title: Cec Mounting Config
+        type: number
+      cec_n_s:
+        title: Cec N S
+        type: number
+      cec_p_mp_ref:
+        title: Cec P Mp Ref
+        type: number
+      cec_r_s:
+        title: Cec R S
+        type: number
+      cec_r_sh_ref:
+        title: Cec R Sh Ref
+        type: number
+      cec_t_noct:
+        title: Cec T Noct
+        type: number
+      cec_v_mp_ref:
+        title: Cec V Mp Ref
+        type: number
+      cec_v_oc_ref:
+        title: Cec V Oc Ref
+        type: number
+      name:
+        title: Name
+        type: string
+      technology:
+        title: Technology
+        type: integer
+    required:
+      - name
+      - technology
+      - cec_area
+      - cec_gamma_r
+      - cec_is_bifacial
+      - cec_p_mp_ref
+      - cec_a_ref
+      - cec_adjust
+      - cec_alpha_sc
+      - cec_beta_oc
+      - cec_bifacial_ground_clearance_height
+      - cec_bifacial_transmission_factor
+      - cec_bifaciality
+      - cec_gap_spacing
+      - cec_i_l_ref
+      - cec_i_mp_ref
+      - cec_i_o_ref
+      - cec_i_sc_ref
+      - cec_module_height
+      - cec_module_width
+      - cec_mounting_config
+      - cec_n_s
+      - cec_r_s
+      - cec_r_sh_ref
+      - cec_t_noct
+      - cec_v_mp_ref
+      - cec_v_oc_ref
+    title: PvSystemModuleCreate
+    type: object
+  PvSystemUpdate:
+    properties:
+      inverter_count:
+        title: Inverter Count
+      inverter_id:
+        title: Inverter Id
+      location_id:
+        title: Location Id
+        type: integer
+      module_id:
+        title: Module Id
+      step:
+        title: Step
+        type: integer
+    required:
+      - location_id
+      - step
+    title: PvSystemUpdate
+    type: object
+  Token:
+    properties:
+      access_token:
+        title: Access Token
+        type: string
+      token_type:
+        title: Token Type
+        type: string
+    required:
+      - access_token
+      - token_type
+    title: Token
+    type: object
+  User:
+    properties:
+      email:
+        title: Email
+        type: string
+      id:
+        title: Id
+        type: integer
+    required:
+      - email
+      - id
+    title: User
+    type: object
+  UserCreate:
+    properties:
+      country:
+        title: Country
+        type: string
+      email:
+        title: Email
+        type: string
+      firstName:
+        title: Firstname
+        type: string
+      lastName:
+        title: Lastname
+        type: string
+      password:
+        title: Password
+        type: string
+      phoneNumber:
+        title: Phonenumber
+        type: string
+    required:
+      - email
+      - password
+      - firstName
+      - lastName
+      - country
+      - phoneNumber
+    title: UserCreate
+    type: object
+  UserLogin:
+    properties:
+      email:
+        title: Email
+        type: string
+      password:
+        title: Password
+        type: string
+    required:
+      - email
+      - password
+    title: UserLogin
+    type: object
+  ValidationError:
+    properties:
+      loc:
+        items: {}
+        title: Location
+        type: array
+      msg:
+        title: Message
+        type: string
+      type:
+        title: Error Type
+        type: string
+    required:
+      - loc
+      - msg
+      - type
+    title: ValidationError
+    type: object
+securityDefinitions:
+  apiKey:
+    type: apiKey
+    name: x-api-key
+    in: header
+  OAuth2PasswordBearer:
+    flow: password
+    scopes: {}
+    tokenUrl: https://sd-api-66csnvffcq-nw.a.run.app
+    type: oauth2
+x-components: {}
+x-google-backend:
+  address: 'https://sd-api-66csnvffcq-nw.a.run.app'
+  protocol: h2
